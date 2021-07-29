@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100&display=swap');
+
+html {
+  height: 100%;
+}
+
+section.hero {
+  background-color: #ffef00
+}
+
+.hero {
+  display:flex;
+  align-items: flex-end;
+}
+
+
+.signupTitle {
+  font-size: 50px;
+  font-family: 'Raleway', sans-serif;
+  justify-content: center;
+  margin-left: 170px;
+}
+
+.button {
+  margin-left: 205px;
+  margin-top: 15px;
+
+}
+.signupform {
+  width: 500px;
+  margin: 40px;
+  /* margin-right: 500px; */
+}
+
+.input {
+  border-color: none;
+  background-color: transparent;
+}
+
+.input, .select select, .textarea  {
+border-color: transparent;
+border-bottom: solid 2px black;
+border-radius: 0%;
+box-shadow: none;
+}
+
+.label {
+font-family: 'Montserrat', sans-serif;
+}
+
+.field {
+margin: 60px;
+}
+
+.heroImg {
+height: 700px;
+/* margin-right: 400px; */
+}
+
+div.hero-body {
+/* margin-right: 250px; */
+margin: 0 auto;
+}
+
+/* Entries  */
+
+.tile.is-child{
+  background-color: #ffef00;
+  padding: 30px;
+}
+/* .entriesContainer {
+  height: 100%;
+} */
+
+.title {
+  font-size: 50px;
+  font-family: 'Raleway', sans-serif;
+  /* margin-left: 170px; */
+}
+
+i {
+  font-size: 20px;
+  color: black;
+  /* z-index: 2; */
+}
+
+/* journal entry page */
+
+.journal .hero-body {
+width: 600px;
+/* background-color: white;
+z-index: 1; */
+}
+
+.datepicker {
+  margin: 30px 60px;
+  width: 450px;
+  height: 50px;
+  font-family: 'Raleway', sans-serif;
+  background: transparent;
+  border-bottom: solid 2px black;
+  padding: 20px;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.react-datepicker {
+  margin-left: 80px;
+  z-index: 11;
+}
+
+.fa-calendar-alt {
+  margin-top: 65px;
+  margin-left: 10px;
+  font-size: 30px;
+}
+
+.react-datepicker__month-container {
+  width: 400px;
+  /* margin: 30px 40px;
+  z-index: 10; */
+
+
+}
+
+.react-datepicker__current-month, 
+.react-datepicker-time__header, 
+.react-datepicker-year-header {
+  font-family: 'Raleway', sans-serif;
+
+}
+
+.react-datepicker__day--selected, 
+.react-datepicker__day--in-selecting-range, 
+.react-datepicker__day--in-range, 
+.react-datepicker__month-text--selected, 
+.react-datepicker__month-text--in-selecting-range, 
+.react-datepicker__month-text--in-range, 
+.react-datepicker__quarter-text--selected, 
+.react-datepicker__quarter-text--in-selecting-range, 
+.react-datepicker__quarter-text--in-range, 
+.react-datepicker__year-text--selected, 
+.react-datepicker__year-text--in-selecting-range, 
+.react-datepicker__year-text--in-range {
+  background-color: #ffef00;
+  border-radius: 0rem;
+  /* font-size: 20px; */
+}
+
+
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+  width: 2.7rem;
+}
+textarea.textarea {
+  background-color: transparent;
+  border-bottom: solid 2px black;
+  width: 500px;
+  height: 450px;
+  padding-left: 2.5em;
+}
+.buttonContainer{
+ display: flex;
+ justify-content: space-between;
+}
+
+.pastentries {
+  margin-left: 10px;
+}
+.input{
+  /* border: none; */
+  outline:none;
+}
+.input:active, .textarea:active {
+  /* border: none; */
+  outline:none;
+}
+
+.addentrytitle {
+  width: 450px;
+}
+
+input#file-upload-button {
+height: 40px;
+border-radius: 0;
+font-family: 'Raleway', sans-serif;
+background-color: black;
+color:white;
+}
+
+/* single entry page  */
+
+.columns {
+  width: 90%;
+  margin-top: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.column {
+  text-align: center;
+}
+
+.entryImg {
+  margin: 0 auto;
+  width: 500px;
+}
