@@ -39,6 +39,7 @@ app.post('/login', async (req, res) => {
         // .sign takes in arguments- first is the payload to serialize the user information from the body. 
         // serielize using the secretkey
         jwt.sign({username}, process.env.ACCESS_SECRET_TOKEN, { expiresIn: "2 days"}, (err, token) => {
+            console.log(token);
             return res.send(token)   
     }) 
         } else {
@@ -55,7 +56,7 @@ app.post('/login', async (req, res) => {
     // ********** post/create an entry after authentication **************
 
     // posting an entry by a specific user
-    app.post('/journalentries/entry/user/:UserId', authenticate, async (req, res) => {
+    app.post('/users/:UserId/journalentries', authenticate, async (req, res) => {
         const { title, entry, date, image } = req.body
         const UserId = req.params.UserId
         // console.log('logging req.body', req.body)
@@ -68,41 +69,51 @@ app.post('/login', async (req, res) => {
     // ******************** CRUD *****************************
 
     // GET: return the journal entry with the id specified in the URL
-    app.get("/journalentries/entry/:id", async (req, res) => {
+    app.get("/users/:UserId/journalentries/:id", async (req, res) => {
         const entryId = req.params.id;
-        const singleEntry = await JournalEntry.findOne({where: {id : entryId}})
+        const singleEntry = await JournalEntry.findOne({ where: { id: entryId }})
         res.send(singleEntry);
     });
  
 
     // PUT: update an entry
-    app.put("/journalentries/entry/:id", async (req, res, next) => {
+    app.put("/users/:UserId/journalentries/:id", async (req, res) => {
+        const { title, entry, date, image } = req.body
         const entryId = req.params.id;   // identifying specific id
-        const newEntryData = req.body; // what you're passing to the endpoint
-        let indexToReplace = await JournalEntry.findOne({where: {id : entryId}}) // first id that matches with the searched id
-        JournalEntry[indexToReplace] = newEntryData; // reassigning the updated airport
-        console.log(JournalEntry[indexToReplace]);
-        res.sendStatus(200);
-        // res.sendStatus(201);
-        
+        let indexToReplace = await JournalEntry.findByPk(entryId) // first id that matches with the searched id
+        await indexToReplace.update({ title, entry, date, image }) // updates the existing id thats matched
+        res.sendStatus(200)
     });
 
     // DELETE entry
-    app.delete("/journalentries/entry/:id", async (req, res) => {
+    app.delete("/users/:UserId/journalentries/:id", async (req, res) => {
         const entryId = req.params.id;
-        let indexToDelete = await JournalEntry.findOne({where: {id : entryId}})  // first id that matches with the searched id
-        const index = JournalEntry.indexOf(indexToDelete); //finds the array index of the argument that you pass in- where entry sits in db
-        JournalEntry.splice(JournalEntry[index], 1); // reassigning the updated entry
-        res.json(JournalEntry);
+        const userId = req.params.UserId
+        try {
+            let entryToDelete = await JournalEntry.findOne({ where: { id: entryId }})  // first id that matches with the searched id
+            await entryToDelete.destroy(); // destroying the specific id from db
+            res.sendStatus(200);
+
+        } catch {
+            res.sendStatus(500);
+        }
     });
 
      // PATCH entry
-     app.patch("/journalentries/entry/:id", async (req, res) => {
+     app.patch("/users/:UserId/journalentries/:id", async (req, res) => {
         const entryId = req.params.id;
-        let indexToDelete = await JournalEntry.findOne({where: {id : entryId}})  // first id that matches with the searched id
-        // const index = JournalEntry.indexOf(indexToDelete); //finds the array index of the argument that you pass in- where entry sits in db
-        // JournalEntry.splice(JournalEntry[index], 1); // reassigning the updated entry
-        res.json(JournalEntry);
+        const userId = req.params.UserId
+        const changes = req.body
+        let entryToUpdate = await JournalEntry.findOne({ where: { id: entryId }})  // identifies id to change
+        console.log(entryToUpdate)
+        if (changes) {
+            entryToUpdate.title = changes.title
+            entryToUpdate.entry = changes.entry
+            entryToUpdate.date = changes.date
+            entryToUpdate.image = changes.image  
+        }
+            entryToUpdate.save()
+            await res.sendStatus(202)
     });
 
 // middleware function for authentication 

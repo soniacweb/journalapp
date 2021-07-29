@@ -8,15 +8,7 @@ import Navbar from './Navbar'
 
 const Register = () => {
 
-  // const handlePassword = () => {
-  //   var x = document.querySelector(".input.password");
-  //       if (x.type === "password") {
-  //         x.type = "text";
-  //       } else {
-  //         x.type = "password";
-  //         }
-  //   console.log('clicked me')
-  //       }
+
 
     return (
         <div>
