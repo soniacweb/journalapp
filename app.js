@@ -38,7 +38,7 @@ app.post('/login', async (req, res) => {
     if (verifyUser) {
         // .sign takes in arguments- first is the payload to serialize the user information from the body. 
         // serielize using the secretkey
-        jwt.sign({username}, process.env.ACCESS_SECRET_TOKEN, { expiresIn: "2 days"}, (err, token) => {
+        jwt.sign({userId: record.id}, process.env.ACCESS_SECRET_TOKEN, { expiresIn: "2 days"}, (err, token) => {
             console.log(token);
             return res.send(token)   
     }) 
@@ -47,18 +47,17 @@ app.post('/login', async (req, res) => {
         }
     })
 
-    // app.get('/blog', authenticate, (req, res) => {
-    //     res.json({
-    //         message: 'hello from my blog'
-    //     })
-    // })
-    
     // ********** post/create an entry after authentication **************
 
     // posting an entry by a specific user
     app.post('/users/:UserId/journalentries', authenticate, async (req, res) => {
         const { title, entry, date, image } = req.body
         const UserId = req.params.UserId
+        if (parseInt(UserId) !== req.userId) {
+            console.log(UserId, req.userId);
+            console.log('ids dont match')
+            return res.sendStatus(403)
+         }
         // console.log('logging req.body', req.body)
         const journalEntry = await JournalEntry.create({ title, entry, date, image, UserId})
         res.send(journalEntry)
@@ -68,27 +67,52 @@ app.post('/login', async (req, res) => {
 
     // ******************** CRUD *****************************
 
+
+     // GET: ALL entries with the id specified in the URL
+     app.get("/users/:UserId/journalentries", authenticate, async (req, res) => {
+        // const entryId = req.params.id;
+        const userId = req.params.UserId
+        if (parseInt(userId) !== req.userId) {
+            console.log(userId, req.userId);
+            return res.sendStatus(403)
+         }
+        const allEntries = await JournalEntry.findAll({where: { UserId: userId }})
+        res.send(allEntries);
+    });
+
     // GET: return the journal entry with the id specified in the URL
-    app.get("/users/:UserId/journalentries/:id", async (req, res) => {
+    app.get("/users/:UserId/journalentries/:id", authenticate, async (req, res) => {
         const entryId = req.params.id;
+        const userId = req.params.UserId
+        if (parseInt(userId) !== req.userId) {
+            console.log(userId, req.userId);
+            return res.sendStatus(403)
+         }
         const singleEntry = await JournalEntry.findOne({ where: { id: entryId }})
         res.send(singleEntry);
     });
  
 
     // PUT: update an entry
-    app.put("/users/:UserId/journalentries/:id", async (req, res) => {
+    app.put("/users/:UserId/journalentries/:id", authenticate, async (req, res) => {
         const { title, entry, date, image } = req.body
         const entryId = req.params.id;   // identifying specific id
+        const userId = req.params.UserId
+        if (parseInt(userId) !== req.userId) {
+            return res.sendStatus(403)
+         }
         let indexToReplace = await JournalEntry.findByPk(entryId) // first id that matches with the searched id
         await indexToReplace.update({ title, entry, date, image }) // updates the existing id thats matched
         res.sendStatus(200)
     });
 
     // DELETE entry
-    app.delete("/users/:UserId/journalentries/:id", async (req, res) => {
+    app.delete("/users/:UserId/journalentries/:id", authenticate, async (req, res) => {
         const entryId = req.params.id;
         const userId = req.params.UserId
+        if (parseInt(userId) !== req.userId) {
+            return res.sendStatus(403)
+         }
         try {
             let entryToDelete = await JournalEntry.findOne({ where: { id: entryId }})  // first id that matches with the searched id
             await entryToDelete.destroy(); // destroying the specific id from db
@@ -100,9 +124,12 @@ app.post('/login', async (req, res) => {
     });
 
      // PATCH entry
-     app.patch("/users/:UserId/journalentries/:id", async (req, res) => {
+     app.patch("/users/:UserId/journalentries/:id", authenticate, async (req, res) => {
         const entryId = req.params.id;
         const userId = req.params.UserId
+        if (parseInt(userId) !== req.userId) {
+           return res.sendStatus(403)
+        }
         const changes = req.body
         let entryToUpdate = await JournalEntry.findOne({ where: { id: entryId }})  // identifies id to change
         console.log(entryToUpdate)
@@ -119,18 +146,18 @@ app.post('/login', async (req, res) => {
 // middleware function for authentication 
 function authenticate(req, res, next) {
 // get the token that JWT generates to verify this is the correct user and return that user in the post blog request
-const authenticatedToken = req.headers.authorization.split(' ')[1] 
-console.log(authenticatedToken) 
-if (authenticatedToken === null) return res.sendStatus(401) // if null or undefined, return a 401 error
+        const authenticatedToken = req.headers.authorization.split(' ')[1] 
+        console.log(authenticatedToken) 
+        if (authenticatedToken === null) return res.sendStatus(401) // if null or undefined, return a 401 error
 
-// at this point we know we have a valid token, so we need to verify it
-try {
-    const payLoad = jwt.verify(authenticatedToken, process.env.ACCESS_SECRET_TOKEN)
-     req.username = payLoad.username
-     next()
-} catch {
-    return res.sendStatus(403)
-}
+        // at this point we know we have a valid token, so we need to verify it
+        try {
+            const payLoad = jwt.verify(authenticatedToken, process.env.ACCESS_SECRET_TOKEN)
+            req.userId = payLoad.userId
+            next()
+        } catch {
+            return res.sendStatus(403)
+        }
 
 }
 

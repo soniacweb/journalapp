@@ -17,8 +17,9 @@ const Home = () => {
      <img src="https://i.imgur.com/0TKePVR.png" className="heroImg" alt="" />
 
      <div className ="signupform">
-
-       <h1 className="signupTitle">Sign up</h1>
+        <h1 className="title">babble.</h1>
+        <h3 className="subtitle">a journal app.</h3>
+       {/* <h1 className="signupTitle">Sign up</h1>
 
           <div class="field">
           <label class="label">Name</label>
@@ -42,7 +43,7 @@ const Home = () => {
 
         <div class="control">
           <button class="button is-black">Submit</button>
-        </div>
+        </div> */}
         </div>
 
   </div>

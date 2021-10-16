@@ -1,22 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100&display=swap");
 
 html {
   height: 100%;
 }
 
 section.hero {
-  background-color: #ffef00
+  /* background-color: #ffef00; */
+  background-color: #f9b9b7;
 }
 
 .hero {
-  display:flex;
+  display: flex;
   align-items: flex-end;
 }
 
+/* .formContainer {
+  background-color: white;
+  opacity: 0.5;
+} */
 
 .signupTitle {
   font-size: 50px;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   justify-content: center;
   margin-left: 170px;
 }
@@ -24,7 +29,6 @@ section.hero {
 .button {
   margin-left: 205px;
   margin-top: 15px;
-
 }
 .signupform {
   width: 500px;
@@ -37,35 +41,37 @@ section.hero {
   background-color: transparent;
 }
 
-.input, .select select, .textarea  {
-border-color: transparent;
-border-bottom: solid 2px black;
-border-radius: 0%;
-box-shadow: none;
+.input,
+.select select,
+.textarea {
+  border-color: transparent;
+  border-bottom: solid 2px black;
+  border-radius: 0%;
+  box-shadow: none;
 }
 
 .label {
-font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .field {
-margin: 60px;
+  margin: 60px;
 }
 
 .heroImg {
-height: 700px;
-/* margin-right: 400px; */
+  height: 700px;
+  /* margin-right: 400px; */
 }
 
 div.hero-body {
-/* margin-right: 250px; */
-margin: 0 auto;
+  /* margin-right: 250px; */
+  margin: 0 auto;
 }
 
 /* Entries  */
 
-.tile.is-child{
-  background-color: #ffef00;
+.tile.is-child {
+  /* background-color: #ffef00; */
   padding: 30px;
 }
 /* .entriesContainer {
@@ -74,7 +80,7 @@ margin: 0 auto;
 
 .title {
   font-size: 50px;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   /* margin-left: 170px; */
 }
 
@@ -87,8 +93,8 @@ i {
 /* journal entry page */
 
 .journal .hero-body {
-width: 600px;
-/* background-color: white;
+  width: 600px;
+  /* background-color: white;
 z-index: 1; */
 }
 
@@ -96,7 +102,7 @@ z-index: 1; */
   margin: 30px 60px;
   width: 450px;
   height: 50px;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   background: transparent;
   border-bottom: solid 2px black;
   padding: 20px;
@@ -119,36 +125,34 @@ z-index: 1; */
   width: 400px;
   /* margin: 30px 40px;
   z-index: 10; */
-
-
 }
 
-.react-datepicker__current-month, 
-.react-datepicker-time__header, 
+.react-datepicker__current-month,
+.react-datepicker-time__header,
 .react-datepicker-year-header {
-  font-family: 'Raleway', sans-serif;
-
+  font-family: "Raleway", sans-serif;
 }
 
-.react-datepicker__day--selected, 
-.react-datepicker__day--in-selecting-range, 
-.react-datepicker__day--in-range, 
-.react-datepicker__month-text--selected, 
-.react-datepicker__month-text--in-selecting-range, 
-.react-datepicker__month-text--in-range, 
-.react-datepicker__quarter-text--selected, 
-.react-datepicker__quarter-text--in-selecting-range, 
-.react-datepicker__quarter-text--in-range, 
-.react-datepicker__year-text--selected, 
-.react-datepicker__year-text--in-selecting-range, 
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
 .react-datepicker__year-text--in-range {
   background-color: #ffef00;
   border-radius: 0rem;
   /* font-size: 20px; */
 }
 
-
-.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
   width: 2.7rem;
 }
 textarea.textarea {
@@ -158,21 +162,22 @@ textarea.textarea {
   height: 450px;
   padding-left: 2.5em;
 }
-.buttonContainer{
- display: flex;
- justify-content: space-between;
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .pastentries {
   margin-left: 10px;
 }
-.input{
+.input {
   /* border: none; */
-  outline:none;
+  outline: none;
 }
-.input:active, .textarea:active {
+.input:active,
+.textarea:active {
   /* border: none; */
-  outline:none;
+  outline: none;
 }
 
 .addentrytitle {
@@ -180,11 +185,11 @@ textarea.textarea {
 }
 
 input#file-upload-button {
-height: 40px;
-border-radius: 0;
-font-family: 'Raleway', sans-serif;
-background-color: black;
-color:white;
+  height: 40px;
+  border-radius: 0;
+  font-family: "Raleway", sans-serif;
+  background-color: black;
+  color: white;
 }
 
 /* single entry page  */
@@ -203,4 +208,44 @@ color:white;
 .entryImg {
   margin: 0 auto;
   width: 500px;
+}
+
+/* sign up */
+
+.fa-arrow-circle-right {
+  /* background-color: white; */
+  color: white;
+  margin-right: 10px;
+}
+
+button {
+  background-color: transparent;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imageColumnContainer {
+  width: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px auto;
+}
+
+.imageColumn {
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.imageGrid {
+  width: 50px;
+  height: 60px;
+}
+
+.searchInput {
+  /* width: 80%; */
+  margin: 50px auto;
+  border: solid 1px black;
 }

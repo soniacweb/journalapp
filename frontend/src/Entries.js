@@ -1,80 +1,112 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import './App.css';
 import { Link} from 'react-router-dom';
+import Navbar from "./Navbar";
+import Entries2 from './Entries2';
+import Modal from './Modal';
 
 const Entries = () => {
+    const [toggle, setToggle] = useState('')
+    const [modal, setModal] = useState(false)
+    const [title, setTitle] = useState('Add an entry..')
+    const [content, setContent] = useState('')
+    const [entries, setEntries] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
+
+    const handleToggle = () => {
+        setModal(!modal)
+        setContent(<textarea class="textarea" placeholder="10 lines of textarea" rows="10"></textarea>)
+    }
+
+    async function getAllEntries() {
+        const getJWT = localStorage.getItem('token')
+        const userId = JSON.parse(atob(localStorage.getItem('token').split('.')[1])).userId
+            await fetch(`/users/${userId}/journalentries`, {
+                method: 'GET',
+                headers: { "Content-Type": "application/json", 
+                            "Authorization": `Bearer ${getJWT}`
+            },
+            })
+        .then((res) => (res.ok) ? Promise.resolve(res) : Promise.reject(new Error(res.statusText))) 
+        .then(res => res.json()) 
+        .catch(error => console.log('There was a problem!', error))
+        .then(data => {
+            const entry = data;
+            console.log(entry)
+            setEntries(entry)
+              })
+
+          }
+        
+          useEffect(() => {
+            getAllEntries()
+        }, []);
+
+        //console.log('last one', entries.slice(-1)[0])
+
+
     return (
+        <>
+        <Navbar />
+
         <div className="entriesContainer">
 
-                    <section class="hero is-medium is-link">
-                    <div class="hero-body">
-                        <p class="title">
+                    <section className="hero is-medium" style={{"background-image": "url({entries.slice(-1)[0].image})"}}>
+                    <div className="hero-body">
+                        <p className="title">
                         Journal Entries
                         </p>
-                        <p class="subtitle">
+                        <p className="subtitle">
                           Scribble down thoughts    
                         </p>
                     </div>
-                    <Link to={'/addentry'}><button class="button is-black">Add Journal Entry</button> </Link>
                     </section>
+        
+                    <input class="input searchInput is-rounded" type="text" placeholder="Search" 
+                    onChange={event => setSearchTerm(event.target.value)} />
 
-               <div className="tile is-ancestor">
-                <div className="tile is-vertical is-8">
-                    <div className="tile">
-                    <div className="tile is-parent is-vertical">
-                        <article className="tile is-child notification">
-                        <p className="title">Entry 1...</p>
-                        <p className="subtitle">lorem ipsum</p>
-                        <p className="date">20.02.20</p>
-                        </article>
-                        <article className="tile is-child notification">
-                        <p className="title">...entry 2</p>
-                        <p className="subtitle">Great day :)</p>
-                        <figure className="image is-4by3"> 
-                        <img src="https://bulma.io/images/placeholders/640x480.png" alt="entry" />
-                        </figure>
-                        <p className="date">20.02.20</p>
-                        </article>
-                    </div>
-                    <div className="tile is-parent">
-                        <article className="tile is-child notification">
-                        <p className="title"> entry 3</p>
-                        <p className="subtitle">With an image</p>
-                        <figure className="image is-4by3">         
-                        <img src="https://bulma.io/images/placeholders/640x480.png" alt="entry" />
-                        </figure>
-                        <p className="date">20.02.20</p>
 
-                        </article>
-                    </div>
-                    </div>
-                    <div className="tile is-parent">
-                    <article className="tile is-child notification">
-                        <p className="title">entry 4</p>
-                        <p className="subtitle">lorem ipsum</p>
-                        <div className="content">
-                        {/* <!-- Content --> */}
-                        </div>
-                    </article>
-                    </div>
+                <div class="imageColumnContainer">
+                    {entries.map(entry => (
+                        <div class="imageColumn" key={entry._id}>
+                            <img className="imageGrid" src={entry.image} alt="entry"></img>
+                        </div>  
+                      )
+                    )}  
                 </div>
-                <div className="tile is-parent">
-                    <article className="tile is-child notification">
-                    <div className="content">
-                        <p className="title">Tall tile</p>
-                        <p className="subtitle">With even more content and lorem ipsum</p>
-                        <div className="content">
-                        {/* <!-- Content --> */}
-                        <figure className="image is-4by3">         
-                        <img src="https://bulma.io/images/placeholders/640x480.png" alt="entry" />
-                        </figure>
-                        </div>
-                    </div>
-                    </article>
-                </div>
-                </div>
+
+                    <Link to={'/addentry'}>
+                         <button className="button is-black">Return</button> 
+                     </Link>
+                     
+                    <button className="button is-black" onClick={handleToggle}>Add Journal Entry</button> 
+                   
+
+                    <Modal toggle={toggle} modal={modal} title={title} content={content}/> 
+
+            <div class="columns is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+          
+                { entries.filter(value => {
+                      if (entries === "") {
+                        return 'No matches'
+                    } else if (value.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        return value
+                    }  
+                })
+              
+                .map(entry => (
+                        <div class="column" key={entry._id}>
+                            <Entries2 entry={entry} /> 
+                        </div>    
+                    )
+                )}   
+              
+            </div>
+
+             
         </div>
+        </>
     )
 }
 

@@ -8,35 +8,51 @@ import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 
 const AddEntry = () => {
-
-    const [color,setColor]=useState('#ffef00');
-    const [textColor,setTextColor]=useState('black');
+    const [color,setColor]=useState('#f9b9b7');
+    const [textColor,setTextColor]=useState('#f9b9b7');
     const [date, setDate] = useState(new Date());
     const [title, setTitle] = useState('')
+    const [image, setImage] = useState('')
+
     const [entry, setEntry] = useState('')
 
 
-    const handleSubmit = (e) => {
+    async function handleSubmit(e) {
         e.preventDefault()
-        const newEntry = {date, title, entry}
+        const newEntry = {date, title, image, entry}
         console.log(newEntry)
-
-        fetch('/api/users/:UserId/journalentries', {
+        const getJWT = localStorage.getItem('token')
+        const userId = JSON.parse(atob(localStorage.getItem('token').split('.')[1])).userId
+        const response = await fetch(`/users/${userId}/journalentries`, {
             method: 'POST',
-            header: { "Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json", 
+                        "Authorization": `Bearer ${getJWT}`
+        },
             body: JSON.stringify(newEntry)
-        }).then(()=> {
-            console.log('new blog added');
         })
+        if (response.ok) {
+            console.log('entry added')
+            // redirect them to add entry page
+            e.target.reset();
+            e.preventDefault()
+ 
+          } else {
+            console.log('error')
+            // response.sendStatus(403)
+          }
     }
+
+
+     // localStorage.getItem in addentry under headers 'authorization'
 
     return (
             <div>
             <Navbar />
             
-
+        
             <section className="hero is-fullheight-with-navbar" >
                 <div className="journal hero-body">
+                    <h1 className="addentry title">add an entry<span>.</span></h1>
                 <img src="https://i.imgur.com/kVmmTuw.png" className="heroImg" alt="background"/>
 
                 <div class="journalContainer">
@@ -78,6 +94,8 @@ const AddEntry = () => {
                      type="text"
                      placeholder="Upload Image"
                      required
+                     value={image}
+                     onChange={(e)=> setImage(e.target.value)}
                      />
                         <span class="icon is-small is-left">
                         <i class="fas fa-images"></i>
@@ -90,7 +108,7 @@ const AddEntry = () => {
                 class="textarea" 
                 placeholder="Hello world" 
                 style={{background:color, color:textColor}} 
-                onClick={()=> {setColor("black"); setTextColor('white')}}
+                onClick={()=> {setColor("white"); setTextColor('black')}}
                 value={entry}
                     onChange={(e)=> setEntry(e.target.value)}
                 >   
