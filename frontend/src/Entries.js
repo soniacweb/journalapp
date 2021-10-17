@@ -11,6 +11,8 @@ const Entries = () => {
     const [modal, setModal] = useState(false)
     const [title, setTitle] = useState('Add an entry..')
     const [content, setContent] = useState('')
+    const [button, setButton] = useState('Submit')
+
     const [entries, setEntries] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
 
@@ -18,6 +20,11 @@ const Entries = () => {
         setModal(!modal)
         setContent(<textarea class="textarea" placeholder="10 lines of textarea" rows="10"></textarea>)
     }
+
+    const handleClick = () => {
+        setButton('Saved!')
+    }
+   
 
     async function getAllEntries() {
         const getJWT = localStorage.getItem('token')
@@ -79,11 +86,10 @@ const Entries = () => {
                     <Link to={'/addentry'}>
                          <button className="button is-black">Return</button> 
                      </Link>
-                     
+
                     <button className="button is-black" onClick={handleToggle}>Add Journal Entry</button> 
                    
-
-                    <Modal toggle={toggle} modal={modal} title={title} content={content}/> 
+                    <Modal toggle={toggle} modal={modal} title={title} content={content} button={button} onClick={handleClick}/> 
 
             <div class="columns is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
           
